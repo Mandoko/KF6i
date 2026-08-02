@@ -1,0 +1,31 @@
+# twrp.flags - TWRP Flags with Backup Support
+
+# SYSTEM PARTITIONS
+/system_root flags=display=System;mounttodecrypt
+/vendor flags=display=Vendor;mounttodecrypt
+/system_ext flags=display=System Ext;mounttodecrypt
+/product flags=display=Product;mounttodecrypt
+
+# SUPER PARTITION
+/super flags=display=Super;backup=1;flashimg=1;wipeingui
+
+# INDIVIDUAL SYSTEM IMAGES
+/system_image flags=display=System Image;backup=1;flashimg=1;wipeingui;slotselect
+/vendor_image flags=display=Vendor Image;backup=1;flashimg=1;wipeingui;slotselect
+/system_ext_image flags=display=System_ext Image;backup=1;flashimg=1;wipeingui;slotselect
+/product_image flags=display=Product Image;backup=1;flashimg=1;wipeingui;slotselect
+
+# OTHER PARTITIONS
+/boot flags=display=Boot;backup=1
+/dtbo flags=display=DTBO;backup=1
+/vbmeta flags=display=VBMeta;backup=1
+/vbmeta_vendor flags=display=VBMeta Vendor;backup=1
+/vbmeta_system flags=display=VBMeta System;backup=1
+/metadata flags=display=Metadata;backup=1
+
+# DATA
+/data flags=display=Data;fileencryption=aes-256-xts:aes-256-cts:v2;keydirectory=/metadata/vold/metadata_encryption;mounttodecrypt
+
+# EXTERNAL STORAGE
+/sdcard flags=display=SD Card;storage;removable;voldmanaged=sdcard1:auto
+/usbotg flags=display=USB OTG;storage;removable;voldmanaged=usbotg:auto
