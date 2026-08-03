@@ -45,7 +45,9 @@ TARGET_BOOTLOADER_BOARD_NAME := TECNO-KF6i
 TARGET_NO_BOOTLOADER := true
 
 # Hardware
+BOARD_HAS_MTK_HARDWARE := true
 BOARD_USES_MTK_HARDWARE := true
+MTK_HARDWARE := true
 
 # Display
 TARGET_SCREEN_DENSITY := 320
@@ -71,7 +73,9 @@ ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
-BOARD_INCLUDE_DTB_IN_BOOTIMG := 
+BOARD_INCLUDE_DTB_IN_BOOTIMG :=
+BOARD_KERNEL_CMDLINE += androidboot.force_normal_boot=1
+BOARD_BOOT_HEADER_VERSION := 2
 endif
 
 # Partitions
@@ -102,14 +106,12 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     libashmemd_client
 TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster41.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so
     
 # Decryption
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 TW_USE_FSCRYPT_POLICY := 2
-TW_CRYPTO_USE_SYSTEM_VOLD := true 
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
@@ -126,6 +128,11 @@ PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
+# Enables System-as-Root configuration in recovery
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+
+# Tells TWRP that /system is mounted at /system_root (standard for SAR)
+BOARD_SUPPRESS_SECURE_ERASE := true
 TARGET_NO_RECOVERY := true
 TW_HAS_NO_RECOVERY_PARTITION := true
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
@@ -151,8 +158,11 @@ TW_USE_TOOLBOX := true
 TW_INCLUDE_REPACKTOOLS := true
 TW_HAS_MTP := true
 RECOVERY_SDCARD_ON_DATA := true
+TW_EXCLUDE_TWRPAPP := true
+TW_EXCLUDE_APEX := true
 TW_DEVICE_VERSION := built by @Ash_the_Newest_rival
 
 #DEBUG
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
+

@@ -5,8 +5,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# Patch broken TWRP vold_decrypt Android.mk on the fly
-$(shell sed -i 's/LOCAL_MODULE_CLASS := RECOVERY_EXECUTABLES/LOCAL_MODULE_CLASS := ETC/g' bootable/recovery/crypto/vold_decrypt/Android.mk)
 
 
 LOCAL_PATH := device/tecno/KF6i
