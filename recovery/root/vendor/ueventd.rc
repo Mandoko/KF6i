@@ -62,6 +62,14 @@
 /dev/mobicore-user        0666   system     system
 /dev/t-base-tui           0666   system     system
 
+# Microtrust (Beanpod) TEE drivers
+/dev/teei_client          0666   system     system
+/dev/teei_config          0660   system     system
+/dev/teei_client_device   0666   system     system
+/dev/tz_heytrace          0660   system     system
+/dev/ut_keymaster         0660   system     system
+/dev/thh_fp_device        0660   system     system
+
 # add the read write right of ttyUSB*
 /dev/bus/usb/*     	  0660   root       usb
 /dev/ttyUSB0              0660   radio      radio
