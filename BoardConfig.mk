@@ -114,13 +114,9 @@ TW_PREPARE_DATA_MEDIA_EARLY := true
 # Encryption fix & Anti-Rollback 
 PLATFORM_VERSION := 11
 PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
-PLATFORM_SECURITY_PATCH := 2021-10-12
-VENDOR_SECURITY_PATCH := 2021-10-12
+PLATFORM_SECURITY_PATCH := 2021-09-05
+VENDOR_SECURITY_PATCH := 2021-09-05
 
-#A11 DECRYPTION
-BOARD_AVB_RECOVERY_ADD_HASH_FOOTER_ARGS += \
-    --prop com.android.build.boot.os_version:$(PLATFORM_VERSION) \
-    --prop com.android.build.boot.security_patch:$(PLATFORM_SECURITY_PATCH)
 
 # Recovery Modules & Relinking
 TARGET_RECOVERY_DEVICE_MODULES += \
@@ -141,7 +137,7 @@ BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 
 # TWRP Configuration
 TW_THEME := portrait_hdpi
-TW_EXCLUDE_LANGUAGES := false
+TW_EXTRA_LANGUAGES := false
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047
@@ -152,8 +148,14 @@ TW_HAS_MTP := true
 RECOVERY_SDCARD_ON_DATA := true
 TW_EXCLUDE_TWRPAPP := true
 TW_EXCLUDE_APEX := true
-TW_INCLUDE_REPACKTOOLS := true
+TARGET_USES_MKE2FS := true
+TW_INCLUDE_NTFS_3G := true
 TW_DEVICE_VERSION := built by @Ash_the_Newest_rival
+
+# resetprop and magiskboot
+TW_INCLUDE_RESETPROP := true
+TW_INCLUDE_REPACKTOOLS := true
+TW_INCLUDE_LIBRESETPROP :=true
 
 # Debugging
 TWRP_INCLUDE_LOGCAT := true
