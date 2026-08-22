@@ -21,6 +21,7 @@ AB_OTA_PARTITIONS += \
     vbmeta_vendor \
     vbmeta_system
 
+# Recovery as boot
 BOARD_USES_RECOVERY_AS_BOOT := true
 TARGET_NO_RECOVERY := true
 TW_HAS_NO_RECOVERY_PARTITION := true
@@ -58,7 +59,8 @@ TARGET_SCREEN_DENSITY := 320
 # Kernel - Prebuilt
 BOARD_BOOTIMG_HEADER_VERSION := 2
 BOARD_KERNEL_BASE := 0x40078000
-BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 buildvariant=user androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 buildvariant=user
+BOARD_KERNEL_CMDLINE += androidboot.force_normal_boot=1
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_RAMDISK_OFFSET := 0x11a88000
 BOARD_KERNEL_TAGS_OFFSET := 0x07808000
@@ -110,10 +112,16 @@ TW_USE_FSCRYPT_POLICY := 2
 TW_FORCE_KEYMASTER_VER := true
 TW_PREPARE_DATA_MEDIA_EARLY := true
 
-# Anti-Rollback Hack & Version Overrides
+# Encryption fix & Anti-Rollback 
+PLATFORM_VERSION := 99.87.36
+PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 PLATFORM_SECURITY_PATCH := 2099-12-31
 VENDOR_SECURITY_PATCH := 2099-12-31
-PLATFORM_VERSION := 16.1.0
+
+#A11 DECRYPTION
+BOARD_AVB_RECOVERY_ADD_HASH_FOOTER_ARGS += \
+    --prop com.android.build.boot.os_version:$(PLATFORM_VERSION) \
+    --prop com.android.build.boot.security_patch:$(PLATFORM_SECURITY_PATCH)
 
 # Recovery Modules & Relinking
 TARGET_RECOVERY_DEVICE_MODULES += \
@@ -136,12 +144,16 @@ BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := false
 TW_SCREEN_BLANK_ON_BOOT := true
+TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
+TW_MAX_BRIGHTNESS := 2047
+TW_DEFAULT_BRIGHTNESS := 1200
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_USE_TOOLBOX := true
 TW_HAS_MTP := true
 RECOVERY_SDCARD_ON_DATA := true
 TW_EXCLUDE_TWRPAPP := true
 TW_EXCLUDE_APEX := true
+TW_INCLUDE_REPACKTOOLS := true
 TW_DEVICE_VERSION := built by @Ash_the_Newest_rival
 
 # Debugging
