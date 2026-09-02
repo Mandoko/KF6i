@@ -1,78 +1,29 @@
 import /init.recovery.microtrust.rc
 
-on init
-    # Standardize /dev/block layout
-    symlink /dev/block/platform/bootdevice /dev/block/bootdevice
-    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/vendor/lib64/hw:/system/lib64/hw
+   on init
+       # Create a more standard /dev/block layout for our scripts
+       symlink /dev/block/platform/bootdevice /dev/block/bootdevice
+       export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/vendor/lib64/hw:/system/lib64/hw
 
-    setprop sys.usb.configfs 1
-    setprop sys.usb.ffs.aio_compat 1
+   on fs
+       mkdir /mnt/vendor/persist 0771 root root
+       mount ext4 /dev/block/platform/bootdevice/by-name/persist /mnt/vendor/persist
 
-on fs
-    mkdir /mnt/vendor/persist 0771 root root
-    mount ext4 /dev/block/platform/bootdevice/by-name/persist /mnt/vendor/persist
-    
-# Create /data/vendor in ramdisk and redirect /data/vendor/thh to /vendor/thh
-    mkdir /data/vendor 0755 root root
-    symlink /vendor/thh /data/vendor/thh
+       install_keyring
+       setprop crypto.ready 1
 
-    # Ensure device nodes have root access in recovery
-    chmod 0660 /dev/teei_client
-    chown root root /dev/teei_client
-    chmod 0660 /dev/teei_config
-    chown root root /dev/teei_config
-    chmod 0666 /dev/isee_tee0
-    chown root root /dev/isee_tee0
-    chmod 0660 /dev/tz_vfs
-    chown root root /dev/tz_vfs
-    chmod 0660 /dev/ut_keymaster
-    chown root root /dev/ut_keymaster
-    chmod 0660 /dev/rpmb0
-    chown root root /dev/rpmb0
+   service keystore_auth /system/bin/keystore_auth
+       oneshot
+       user system
+       group root
+       disabled
+       seclabel u:r:recovery:s0
 
-    install_keyring
-    setprop crypto.ready 1
-
-on post-fs
-    symlink /dev/block/sda /dev/block/mmcblk0boot0
-    symlink /dev/block/sdb /dev/block/mmcblk0boot1
-    symlink /dev/block/mmcblk0boot0 /dev/block/platform/bootdevice/by-name/preloader_a
-    symlink /dev/block/mmcblk0boot1 /dev/block/platform/bootdevice/by-name/preloader_b
-
-    exec u:r:update_engine:s0 root root -- /system/bin/mtk_plpath_utils
-    start mtk.plpath.utils.link
-
-on boot
-    start vendor.boot-hal-1-1
-    start health-hal-2-1
-
-on fs && property:ro.debuggable=0
-    write /sys/class/udc/musb-hdrc/device/cmode 2
-    start adbd
-
-# ==============================================================================
-# SERVICES
-# ==============================================================================
-
-service hwservicemanager /system/bin/hwservicemanager
-    user root
-    group root readproc
-    disabled
-    onrestart setprop hwservicemanager.ready false
-    seclabel u:r:recovery:s0
-
-service keystore_auth /system/bin/keystore_auth
-    oneshot
-    user system
-    group root
-    disabled
-    seclabel u:r:recovery:s0
-
-service keystore /system/bin/keystore /tmp/misc/keystore
-    user root
-    group root drmrpc readproc
-    disabled
-    seclabel u:r:recovery:s0
+   service keystore /system/bin/keystore /tmp/misc/keystore
+       user root
+       group root drmrpc readproc
+       disabled
+       seclabel u:r:recovery:s0
 
 service vendor.gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     interface android.hardware.gatekeeper@1.0::IGatekeeper default
@@ -89,56 +40,63 @@ service vendor.keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4
     disabled
     seclabel u:r:recovery:s0
 
-service vendor.boot-hal-1-1 /vendor/bin/hw/android.hardware.boot@1.1-service
-    interface android.hardware.boot@1.0::IBootControl default
-    interface android.hardware.boot@1.1::IBootControl default
-    class early_hal
-    user root
-    group root
-    seclabel u:r:recovery:s0
 
-service health-hal-2-1 /vendor/bin/hw/android.hardware.health@2.1-service
-    class hal charger
-    user system
-    group system
-    capabilities WAKE_ALARM
-    file /dev/kmsg w
-    seclabel u:r:recovery:s0
+   on property:vendor.sys.listener.registered=true
+       start vendor.gatekeeper-1-0
+       start vendor.keymaster-4-0-beanpod
 
-service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
-    class main
-    user root
-    group root system
-    oneshot
-    disabled
-    seclabel u:r:recovery:s0
+   on property:crypto.ready=1
+       start vendor.keymaster-4-0-beanpod
 
-# ==============================================================================
-# TRIGGERS
-# ==============================================================================
+   on property:hwservicemanager.ready=true
+       start vendor.keymaster-4-0-beanpod
+       start vendor.gatekeeper-1-0
 
-on property:crypto.ready=1
-    start hwservicemanager
+   on property:ro.crypto.state=unsupported
+       stop teei_daemon
+       stop vendor.keymaster-4-0-beanpod
+       stop vendor.gatekeeper-1-0
 
-on property:hwservicemanager.ready=true
-    start vendor.keymaster-4-0-beanpod
-    start vendor.gatekeeper-1-0
+   on property:ro.crypto.state=unencrypted
+       stop teei_daemon
+       stop vendor.keymaster-4-0-beanpod
+       stop vendor.gatekeeper-1-0
 
-on property:vendor.sys.listener.registered=true
-    start vendor.gatekeeper-1-0
-    start vendor.keymaster-4-0-beanpod
+   on property:twrp.decrypt.done=true
+       stop teei_daemon
+       stop vendor.keymaster-4-0-beanpod
+       stop vendor.gatekeeper-1-0
 
-on property:ro.crypto.state=unsupported
-    stop teei_daemon
-    stop vendor.keymaster-4-0-beanpod
-    stop vendor.gatekeeper-1-0
+   on init
+   setprop sys.usb.configfs 1
+   setprop sys.usb.ffs.aio_compat 1
 
-on property:ro.crypto.state=unencrypted
-    stop teei_daemon
-    stop vendor.keymaster-4-0-beanpod
-    stop vendor.gatekeeper-1-0
+   on fs && property:ro.debuggable=0
+   # distinguish USB shoulde connect or not, i.e. CDP vs SDP
+    write /sys/class/udc/musb-hdrc/device/cmode 2
+    # set charging free due to it wait for USB activation
+    start adbd
 
-on property:twrp.decrypt.done=true
-    stop teei_daemon
-    stop vendor.keymaster-4-0-beanpod
-    stop vendor.gatekeeper-1-0
+   on post-fs
+       # Support A/B feature for EMMC and UFS boot region
+    # Support A/B feature for emmc boot region
+    symlink /dev/block/sda /dev/block/mmcblk0boot0
+    symlink /dev/block/sdb /dev/block/mmcblk0boot1
+    symlink /dev/block/mmcblk0boot0 /dev/block/platform/bootdevice/by-name/preloader_a
+    symlink /dev/block/mmcblk0boot1 /dev/block/platform/bootdevice/by-name/preloader_b
+
+    exec u:r:update_engine:s0 root root -- /system/bin/mtk_plpath_utils
+ 
+       start mtk.plpath.utils.link
+
+   service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
+       class main
+       user root
+       group root system
+       oneshot
+       disabled
+       seclabel u:r:recovery:s0
+
+   on boot
+       start boot-hal-1-2
+       start health-hal-2-1
