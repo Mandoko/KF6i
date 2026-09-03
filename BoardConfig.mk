@@ -157,11 +157,6 @@ TW_USES_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 
 # MTP and storage options
 TW_HAS_MTP := true
-TW_MTP_DEVICE := /dev/mtp_usb
-TW_INTERNAL_STORAGE_PATH := "/data/media/0"
-TW_INTERNAL_STORAGE_MOUNT_POINT := "data
-TW_EXTERNAL_STORAGE_PATH := "/external_sd"
-TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
 RECOVERY_SDCARD_ON_DATA := true
 
 # resetprop and magiskboot
