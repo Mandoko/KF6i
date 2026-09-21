@@ -13,22 +13,8 @@ on fs
     mount ext4 /dev/block/platform/bootdevice/by-name/persist /mnt/vendor/persist
     
 # Create /data/vendor in ramdisk and redirect /data/vendor/thh to /vendor/thh
-    #mkdir /data/vendor 0755 root root
-    #symlink /vendor/thh /data/vendor/thh
-
-    # Ensure device nodes have root access in recovery
-    #chmod 0660 /dev/teei_client
-    #chown root root /dev/teei_client
-    #chmod 0660 /dev/teei_config
-    #chown root root /dev/teei_config
-    #chmod 0666 /dev/isee_tee0
-    #chown root root /dev/isee_tee0
-    #chmod 0660 /dev/tz_vfs
-    #chown root root /dev/tz_vfs
-    #chmod 0660 /dev/ut_keymaster
-    #chown root root /dev/ut_keymaster
-    #chmod 0660 /dev/rpmb0
-    #chown root root /dev/rpmb0
+    mkdir /data/vendor 0755 root root
+    symlink /vendor/thh /data/vendor/thh
 
     install_keyring
     setprop crypto.ready 1
