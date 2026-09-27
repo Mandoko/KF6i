@@ -97,6 +97,3 @@ on init
        disabled
        seclabel u:r:recovery:s0
 
-   on boot
-       start boot-hal-1-2
-       start health-hal-2-1
