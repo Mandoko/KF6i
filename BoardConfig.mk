@@ -145,6 +145,7 @@ BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 # TWRP Configuration
 TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := false
+TW_DEFAULT_LANGUAGE := en
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047
@@ -154,7 +155,7 @@ TW_USE_TOOLBOX := true
 TW_EXCLUDE_TWRPAPP := true
 TW_EXCLUDE_APEX := true
 TARGET_USES_MKE2FS := true
-TW_INCLUDE_NTFS_3G := true
+#TW_INCLUDE_NTFS_3G := true
 TW_DEVICE_VERSION := built by @Ash_the_Newest_rival
 TW_USES_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 
@@ -163,9 +164,9 @@ TW_HAS_MTP := true
 RECOVERY_SDCARD_ON_DATA := true
 
 # resetprop and magiskboot
-TW_INCLUDE_RESETPROP := true
-TW_INCLUDE_REPACKTOOLS := true
-TW_INCLUDE_LIBRESETPROP :=true
+TW_INCLUDE_RESETPROP := false
+TW_INCLUDE_REPACKTOOLS := false
+TW_INCLUDE_LIBRESETPROP := false
 
 # Debugging
 TWRP_INCLUDE_LOGCAT := true
