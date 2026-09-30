@@ -12,6 +12,25 @@ on init
    on fs
        mkdir /mnt/vendor/persist 0771 root root
        mount ext4 /dev/block/platform/bootdevice/by-name/persist /mnt/vendor/persist
+       
+    mkdir /mnt/vendor_real 0755 root root
+
+    mount ext4 /dev/block/mapper/vendor${ro.boot.slot_suffix} /mnt/vendor_real ro
+
+    mkdir /tmp/thh 0755 root root
+    mkdir /tmp/thh/ta 0755 root root
+
+    exec -- /system/bin/toybox cp -a /mnt/vendor_real/thh/ta/. /tmp/thh/ta/
+
+    umount /mnt/vendor_real
+    rmdir /mnt/vendor_real
+    
+    mkdir /vendor 0755 root root
+    mkdir /vendor/thh 0755 root root
+
+    exec -- /sbin/toybox rm -rf /vendor/thh/ta
+
+    symlink /tmp/thh/ta /vendor/thh/ta
 
        install_keyring
        setprop crypto.ready 1
