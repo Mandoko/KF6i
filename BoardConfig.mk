@@ -151,16 +151,31 @@ TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047
 TW_DEFAULT_BRIGHTNESS := 1200
 TW_INPUT_BLACKLIST := "hbtp_vm"
-TW_USE_TOOLBOX := false
+TW_USE_TOOLBOX := true
 TW_EXCLUDE_TWRPAPP := true
 TW_EXCLUDE_APEX := true
 TARGET_USES_MKE2FS := true
 TW_INCLUDE_NTFS_3G := false
-TW_DEVICE_VERSION := built by @Ash_the_Newest_rival
-TW_USES_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 TARGET_BOOTANIMATION_USE_RGB565 := true
 TW_EXCLUDE_TZDATA := true
 TW_EXCLUDE_NANO := true
+TW_NO_USB_STORAGE := true
+TW_NO_EXFAT := true
+TW_INCLUDE_DUMLOCK := true
+TW_NO_CPU_TEMP := true
+TW_EXCLUDE_SUPERSU := true
+TW_NO_HAPTICS := true
+TW_NO_LEGACY_PROPS := true
+TW_EXCLUDE_LPTOOLS := true
+TW_EXCLUDE_LPDUMP := true
+TW_OEM_BUILD := true
+TW_DISABLE_TTF := true
+TW_NO_BATT_PERCENT := true
+TW_INCLUDE_FB2PNG := true
+W_NO_EXFAT_FUSE := true
+
+TW_DEVICE_VERSION := built by @Ash_the_Newest_rival
+TW_USES_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 
 # MTP and storage options
 TW_EXCLUDE_MTP := true
