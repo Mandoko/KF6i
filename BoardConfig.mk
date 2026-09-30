@@ -170,7 +170,7 @@ TW_EXCLUDE_LPTOOLS := true
 TW_EXCLUDE_LPDUMP := true
 TW_OEM_BUILD := true
 TW_DISABLE_TTF := true
-TW_NO_BATT_PERCENT := true
+#TW_NO_BATT_PERCENT := true
 TW_INCLUDE_FB2PNG := true
 TW_NO_EXFAT_FUSE := true
 
@@ -190,5 +190,3 @@ TW_INCLUDE_LIBRESETPROP := false
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 
-# Ramdisk compression
-TW_USE_COMPRESSION := true
