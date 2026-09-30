@@ -123,17 +123,17 @@ VENDOR_SECURITY_PATCH := 2021-09-05
 
 
 # Recovery Modules & Relinking
-TARGET_RECOVERY_DEVICE_MODULES += \
-    libkeymaster4 \
-    libpuresoftkeymasterdevice \
-    ashmemd_aidl_interface-cpp \
-    libashmemd_client
+#TARGET_RECOVERY_DEVICE_MODULES += \
+#    libkeymaster4 \
+#    libpuresoftkeymasterdevice \
+#    ashmemd_aidl_interface-cpp \
+#    libashmemd_client
 
-TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/ashmemd_aidl_interface-cpp.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libashmemd_client.so
+#TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+#    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
+#    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so \
+#    $(TARGET_OUT_SHARED_LIBRARIES)/ashmemd_aidl_interface-cpp.so \
+#   $(TARGET_OUT_SHARED_LIBRARIES)/libashmemd_client.so
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
@@ -155,12 +155,15 @@ TW_USE_TOOLBOX := false
 TW_EXCLUDE_TWRPAPP := true
 TW_EXCLUDE_APEX := true
 TARGET_USES_MKE2FS := true
-#TW_INCLUDE_NTFS_3G := true
+TW_INCLUDE_NTFS_3G := false
 TW_DEVICE_VERSION := built by @Ash_the_Newest_rival
 TW_USES_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
+TARGET_BOOTANIMATION_USE_RGB565 := true
+TW_EXCLUDE_TZDATA := true
+TW_EXCLUDE_NANO := true
 
 # MTP and storage options
-TW_HAS_MTP := true
+TW_EXCLUDE_MTP := true
 RECOVERY_SDCARD_ON_DATA := true
 
 # resetprop and magiskboot
@@ -171,3 +174,6 @@ TW_INCLUDE_LIBRESETPROP := false
 # Debugging
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
+
+# Ramdisk compression
+TW_USE_COMPRESSION := true
