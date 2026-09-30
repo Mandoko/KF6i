@@ -172,7 +172,7 @@ TW_OEM_BUILD := true
 TW_DISABLE_TTF := true
 TW_NO_BATT_PERCENT := true
 TW_INCLUDE_FB2PNG := true
-W_NO_EXFAT_FUSE := true
+TW_NO_EXFAT_FUSE := true
 
 TW_DEVICE_VERSION := built by @Ash_the_Newest_rival
 TW_USES_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
