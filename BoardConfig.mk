@@ -121,20 +121,21 @@ PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 PLATFORM_SECURITY_PATCH := 2021-09-05
 VENDOR_SECURITY_PATCH := 2021-09-05
 
+# Recovery Modules & Relinking for Keymaster 4.1
+TARGET_RECOVERY_DEVICE_MODULES += \
+    libkeymaster4 \
+    libkeymaster4.1 \
+    libpuresoftkeymasterdevice \
+    ashmemd_aidl_interface-cpp \
+    libashmemd_client
 
-# Recovery Modules & Relinking
-#TARGET_RECOVERY_DEVICE_MODULES += \
-#    libkeymaster4 \
-#    libpuresoftkeymasterdevice \
-#    ashmemd_aidl_interface-cpp \
-#    libashmemd_client
-
-#TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-#    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
-#    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so \
-#    $(TARGET_OUT_SHARED_LIBRARIES)/ashmemd_aidl_interface-cpp.so \
-#   $(TARGET_OUT_SHARED_LIBRARIES)/libashmemd_client.so
-
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.1.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/ashmemd_aidl_interface-cpp.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libashmemd_client.so
+    
 # Verified Boot
 BOARD_AVB_ENABLE := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
@@ -182,9 +183,9 @@ TW_EXCLUDE_MTP := true
 RECOVERY_SDCARD_ON_DATA := true
 
 # resetprop and magiskboot
-TW_INCLUDE_RESETPROP := false
+TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_REPACKTOOLS := false
-TW_INCLUDE_LIBRESETPROP := false
+TW_INCLUDE_LIBRESETPROP := true
 
 # Debugging
 TWRP_INCLUDE_LOGCAT := true
