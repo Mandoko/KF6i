@@ -169,7 +169,7 @@ TW_NO_HAPTICS := true
 TW_NO_LEGACY_PROPS := true
 TW_EXCLUDE_LPTOOLS := true
 TW_EXCLUDE_LPDUMP := true
-#TW_NO_BATT_PERCENT := true
+TW_NO_BATT_PERCENT := true
 TW_INCLUDE_FB2PNG := true
 TW_NO_EXFAT_FUSE := true
 
@@ -178,7 +178,6 @@ TW_USES_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 
 # MTP and storage options
 TW_EXCLUDE_MTP := true
-RECOVERY_SDCARD_ON_DATA := true
 
 # resetprop and magiskboot
 TW_INCLUDE_RESETPROP := true
