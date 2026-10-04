@@ -123,16 +123,10 @@ VENDOR_SECURITY_PATCH := 2021-09-05
 
 # Recovery Modules & Relinking for Keymaster 4.1
 TARGET_RECOVERY_DEVICE_MODULES += \
-    libkeymaster4 \
-    libkeymaster4.1 \
-    libpuresoftkeymasterdevice \
     ashmemd_aidl_interface-cpp \
     libashmemd_client
 
 TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.1.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/ashmemd_aidl_interface-cpp.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libashmemd_client.so
     
@@ -184,7 +178,7 @@ TW_EXCLUDE_MTP := true
 
 # resetprop and magiskboot
 TW_INCLUDE_RESETPROP := true
-TW_INCLUDE_REPACKTOOLS := false
+TW_INCLUDE_REPACKTOOLS := true
 TW_INCLUDE_LIBRESETPROP := true
 
 # Debugging

@@ -2,6 +2,7 @@ import /vendor/etc/init/android.hardware.gatekeeper@1.0-service.rc
 import /vendor/etc/init/android.hardware.keymaster@4.0-service.beanpod.rc
 import /vendor/etc/init/vendor.mediatek.hardware.keymaster_attestation@1.1-service.rc
 import /vendor/etc/init/microtrust.rc
+import /system/etc/init/keystore.rc
 
 
 on init
@@ -13,25 +14,6 @@ on init
        mkdir /mnt/vendor/persist 0771 root root
        mount ext4 /dev/block/platform/bootdevice/by-name/persist /mnt/vendor/persist
        
-    mkdir /mnt/vendor_real 0755 root root
-
-    mount ext4 /dev/block/mapper/vendor${ro.boot.slot_suffix} /mnt/vendor_real ro
-
-    mkdir /tmp/thh 0755 root root
-    mkdir /tmp/thh/ta 0755 root root
-
-    exec -- /system/bin/toybox cp -a /mnt/vendor_real/thh/ta/. /tmp/thh/ta/
-
-    umount /mnt/vendor_real
-    rmdir /mnt/vendor_real
-    
-    mkdir /vendor 0755 root root
-    mkdir /vendor/thh 0755 root root
-
-    exec -- /sbin/toybox rm -rf /vendor/thh/ta
-
-    symlink /tmp/thh/ta /vendor/thh/ta
-
        install_keyring
        setprop crypto.ready 1
 
@@ -41,12 +23,6 @@ service keystore_auth /system/bin/keystore_auth
     oneshot
     user system
     group root
-    disabled
-    seclabel u:r:recovery:s0
-
-service keystore /system/bin/keystore /tmp/misc/keystore
-    user root
-    group root drmrpc readproc log
     disabled
     seclabel u:r:recovery:s0
 
