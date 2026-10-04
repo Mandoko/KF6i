@@ -123,12 +123,14 @@ VENDOR_SECURITY_PATCH := 2021-09-05
 
 # Recovery Modules & Relinking for Keymaster 4.1
 TARGET_RECOVERY_DEVICE_MODULES += \
+    libkeymaster4 \
     libkeymaster4.1 \
     libpuresoftkeymasterdevice \
     ashmemd_aidl_interface-cpp \
     libashmemd_client
 
 TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.1.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/ashmemd_aidl_interface-cpp.so \
@@ -142,7 +144,7 @@ TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
 #BOARD_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy
 
 # TWRP Configuration
-TW_THEME := portrait_hdpi
+#TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := false
 TW_DEFAULT_LANGUAGE := en
 TW_SCREEN_BLANK_ON_BOOT := true
@@ -168,8 +170,11 @@ TW_NO_LEGACY_PROPS := true
 TW_EXCLUDE_LPTOOLS := true
 TW_EXCLUDE_LPDUMP := true
 TW_NO_BATT_PERCENT := true
-TW_INCLUDE_FB2PNG := true
 TW_NO_EXFAT_FUSE := true
+BOARD_HAS_NO_REAL_SDCARD := true
+TW_NO_SCREEN_TIMEOUT := true
+TW_NO_REBOOT_FASTBOOT := true
+TW_INCLUDE_FB2PNG := false
 
 TW_DEVICE_VERSION := built by @Ash_the_Newest_rival
 TW_USES_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
