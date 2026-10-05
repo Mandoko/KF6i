@@ -121,18 +121,24 @@ PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 PLATFORM_SECURITY_PATCH := 2021-09-05
 VENDOR_SECURITY_PATCH := 2021-09-05
 
-# Recovery Modules & Relinking for Keymaster 4.1
+# Recovery Modules & Relinking
 TARGET_RECOVERY_DEVICE_MODULES += \
+    libkeymaster4 \
+    libkeymaster4.1 \
+    libpuresoftkeymasterdevice \
     ashmemd_aidl_interface-cpp \
     libashmemd_client
 
 TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.1.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/ashmemd_aidl_interface-cpp.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libashmemd_client.so
-    
+
 # Verified Boot
-#BOARD_AVB_ENABLE := true
-#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
+BOARD_AVB_ENABLE := true
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 
 # Sepolicy
 #BOARD_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy
@@ -150,38 +156,19 @@ TW_USE_TOOLBOX := true
 TW_EXCLUDE_TWRPAPP := true
 TW_EXCLUDE_APEX := true
 TARGET_USES_MKE2FS := true
-TW_INCLUDE_NTFS_3G := false
-#TARGET_BOOTANIMATION_USE_RGB565 := true
-TW_EXCLUDE_TZDATA := true
-TW_EXCLUDE_NANO := true
-TW_NO_USB_STORAGE := true
-TW_NO_EXFAT := true
-#TW_INCLUDE_DUMLOCK := true
-TW_NO_CPU_TEMP := true
-TW_EXCLUDE_SUPERSU := true
-TW_NO_HAPTICS := true
-#TW_NO_LEGACY_PROPS := true
-TW_EXCLUDE_LPTOOLS := true
-TW_EXCLUDE_LPDUMP := true
-TW_NO_BATT_PERCENT := true
-TW_NO_EXFAT_FUSE := true
-#BOARD_HAS_NO_REAL_SDCARD := true
-#TW_NO_SCREEN_TIMEOUT := true
-TW_NO_REBOOT_FASTBOOT := true
-#TW_INCLUDE_FB2PNG := false
-
+TW_INCLUDE_NTFS_3G := true
 TW_DEVICE_VERSION := built by @Ash_the_Newest_rival
 TW_USES_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 
 # MTP and storage options
-TW_EXCLUDE_MTP := true
+TW_HAS_MTP := true
+RECOVERY_SDCARD_ON_DATA := true
 
 # resetprop and magiskboot
 TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_REPACKTOOLS := true
-TW_INCLUDE_LIBRESETPROP := true
+TW_INCLUDE_LIBRESETPROP :=true
 
 # Debugging
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
-
