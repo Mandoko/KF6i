@@ -1,5 +1,6 @@
 import /init.recovery.microtrust.rc
 
+
 on init
     # Standardize /dev/block layout
     symlink /dev/block/platform/bootdevice /dev/block/bootdevice
@@ -15,6 +16,8 @@ on fs
 # Create /data/vendor in ramdisk and redirect /data/vendor/thh to /vendor/thh
     mkdir /data/vendor 0755 root root
     symlink /vendor/thh /data/vendor/thh
+    mkdir /tmp/misc 0755 root root
+    mkdir /tmp/misc/keystore 0755 root root
 
     install_keyring
     setprop crypto.ready 1
@@ -49,7 +52,7 @@ service hwservicemanager /system/bin/hwservicemanager
 
 service keystore_auth /system/bin/keystore_auth
     oneshot
-    user system
+    user root
     group root
     disabled
     seclabel u:r:recovery:s0
